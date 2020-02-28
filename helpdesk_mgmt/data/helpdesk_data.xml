@@ -202,6 +202,9 @@
     <record id="helpdesk_ticket_channel_web" model="helpdesk.ticket.channel">
       <field name="name">Web</field>
     </record>
+    <record id="helpdesk_ticket_channel_portal" model="helpdesk.ticket.channel">
+      <field name="name">Portal</field>
+    </record>
     <record id="helpdesk_ticket_channel_email" model="helpdesk.ticket.channel">
       <field name="name">Email</field>
     </record>
