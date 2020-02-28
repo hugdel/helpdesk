@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="helpdesk_mgmt.model_helpdesk_ticket" model="ir.model">
+            <field name="website_form_default_field_id" ref="helpdesk_mgmt.field_helpdesk_ticket__description" />
+            <field name="website_form_access">True</field>
+            <field name="website_form_label">Create a ticket</field>
+        </record>
+        <function model="ir.model.fields" name="formbuilder_whitelist">
+            <value>helpdesk.ticket</value>
+            <value eval="[
+                'partner_name',
+                'partner_email',
+                'category_id',
+                'name',
+                'attachment',
+                'description',
+            ]"/>
+        </function>
+    </data>
+    <data noupdate="1">
+        <record id="action_open_website" model="ir.actions.act_url">
+            <field name="name">Website Service Call Form</field>
+            <field name="target">self</field>
+            <field name="url">/servicecall</field>
+        </record>
+
+        <record id="base.open_menu" model="ir.actions.todo">
+            <field name="action_id" ref="action_open_website"/>
+            <field name="state">open</field>
+        </record>
+    </data>
+</odoo>
