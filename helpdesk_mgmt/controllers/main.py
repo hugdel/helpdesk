@@ -45,7 +45,7 @@ class HelpdeskTicketController(http.Controller):
             'attachment_ids': False,
             'channel_id':
                 request.env['helpdesk.ticket.channel'].
-                sudo().search([('name', '=', 'Web')]).id,
+                sudo().search([('name', '=', 'Portal')]).id,
             'partner_id':
                 request.env['res.partner'].sudo().search([
                     ('name', '=', kw.get('name')),

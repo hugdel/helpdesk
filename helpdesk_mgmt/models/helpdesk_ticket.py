@@ -2,7 +2,6 @@ from odoo import _, api, fields, models, tools
 
 
 class HelpdeskTicket(models.Model):
-
     _name = 'helpdesk.ticket'
     _description = 'Helpdesk Ticket'
     _rec_name = 'number'
@@ -14,11 +13,11 @@ class HelpdeskTicket(models.Model):
 
     number = fields.Char(string='Ticket number', default="/",
                          readonly=True)
-    name = fields.Char(string='Title', required=True)
+    name = fields.Char(string='Title', required=True, track_visibility='onchange')
     description = fields.Text(required=True)
     user_id = fields.Many2one(
         'res.users',
-        string='Assigned user',)
+        string='Assigned user', )
 
     user_ids = fields.Many2many(
         comodel_name='res.users',
@@ -37,9 +36,9 @@ class HelpdeskTicket(models.Model):
         default=_get_default_stage_id,
         track_visibility='onchange',
     )
-    partner_id = fields.Many2one('res.partner')
-    partner_name = fields.Char()
-    partner_email = fields.Char()
+    partner_id = fields.Many2one('res.partner', track_visibility='onchange')
+    partner_name = fields.Char(track_visibility='onchange')
+    partner_email = fields.Char(track_visibility='onchange')
 
     last_stage_update = fields.Datetime(
         string='Last Stage Update',
@@ -70,7 +69,7 @@ class HelpdeskTicket(models.Model):
         ('1', _('Medium')),
         ('2', _('High')),
         ('3', _('Very High')),
-    ], string='Priority', default='1')
+    ], string='Priority', default='1', track_visibility='onchange')
     attachment_ids = fields.One2many(
         'ir.attachment', 'res_id',
         domain=[('res_model', '=', 'helpdesk.ticket')],
@@ -99,7 +98,7 @@ class HelpdeskTicket(models.Model):
     def _onchange_dominion_user_id(self):
         if self.user_id:
             if self.user_id and self.user_ids and \
-                    self.user_id not in self.user_ids:
+                self.user_id not in self.user_ids:
                 self.update({
                     'user_id': False
                 })
