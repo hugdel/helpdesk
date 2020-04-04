@@ -2,7 +2,6 @@ from odoo import api, fields, models
 
 
 class HelpdeskTeam(models.Model):
-
     _name = 'helpdesk.ticket.team'
     _description = 'Helpdesk Ticket Team'
 
@@ -17,6 +16,12 @@ class HelpdeskTeam(models.Model):
         string="Company",
         default=lambda self: self.env['res.company']._company_default_get(
             'helpdesk.ticket')
+    )
+
+    team_email = fields.Char(
+        string="Team email",
+        compute='_compute_team_email',
+        store=False,
     )
 
     color = fields.Integer("Color Index", default=0)
@@ -62,3 +67,8 @@ class HelpdeskTeam(models.Model):
             record.todo_ticket_count_high_priority = len(
                 record.todo_ticket_ids.filtered(
                     lambda ticket: ticket.priority == '3'))
+
+    @api.depends('user_ids')
+    def _compute_team_email(self):
+        for ticket in self:
+            ticket.team_email = ";".join([a.email for a in ticket.user_ids])

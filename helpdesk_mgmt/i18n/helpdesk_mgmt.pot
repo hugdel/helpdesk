@@ -19,10 +19,23 @@ msgid "${object.company_id.name} Ticket Assignment (Ref ${object.number or 'n/a'
 msgstr ""
 
 #. module: helpdesk_mgmt
+#: model:mail.template,subject:helpdesk_mgmt.assignment_team_email_template
+msgid "${object.company_id.name} Ticket Team Assignment (Ref ${object.number or 'n/a' })"
+msgstr ""
+
+#. module: helpdesk_mgmt
 #: model:mail.template,body_html:helpdesk_mgmt.assignment_email_template
 msgid "<?xml version=\"1.0\"?>\n"
 "<data><p>Hello ${object.user_id.name},</p>\n"
-"        <p>The ticket ${object.number} has been assigned to you.</p>\n"
+"        <p>The ticket <a href=\"${object.get_ticket_url()}\">${object.number}</a> has been assigned to you.</p>\n"
+"      </data>"
+msgstr ""
+
+#. module: helpdesk_mgmt
+#: model:mail.template,body_html:helpdesk_mgmt.assignment_team_email_template
+msgid "<?xml version=\"1.0\"?>\n"
+"<data><p>Hello team ${object.team_id.name},</p>\n"
+"        <p>The ticket <a href=\"${object.get_ticket_url()}\">${object.number}</a> has been assigned to your team.</p>\n"
 "      </data>"
 msgstr ""
 
@@ -64,7 +77,7 @@ msgid "<html>\n"
 "                            <tbody>\n"
 "                              <td valign=\"top\" style=\"font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;\">\n"
 "                                <p>Hello ${object.user_id.name},</p>\n"
-"                                <p>The ticket ${object.number} has been closed.</p>\n"
+"                                <p>The ticket <a href=\"${object.get_ticket_url()}\">${object.number}</a> has been closed.</p>\n"
 "                              </td>\n"
 "                            </tbody>\n"
 "                          </table>\n"
@@ -121,7 +134,7 @@ msgid "<html>\n"
 "                            <tbody>\n"
 "                              <td valign=\"top\" style=\"font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;\">\n"
 "                                <p>Hello ${object.user_id.name},</p>\n"
-"                                <p>The ticket ${object.number} stage has changed to ${object.stage_id.name}.</p>\n"
+"                                <p>The ticket <a href=\"${object.get_ticket_url()}\">${object.number}</a> stage has changed to ${object.stage_id.name}.</p>\n"
 "                              </td>\n"
 "                            </tbody>\n"
 "                          </table>\n"

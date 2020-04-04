@@ -81,8 +81,14 @@ class HelpdeskTicket(models.Model):
         ('blocked', 'Blocked')], string='Kanban State')
 
     def send_user_mail(self):
-        self.env.ref('helpdesk_mgmt.assignment_email_template'). \
-            send_mail(self.id)
+        if self.user_id:
+            self.env.ref('helpdesk_mgmt.assignment_email_template'). \
+                send_mail(self.id, email_values={}, force_send=True)
+
+    def send_team_mail(self):
+        if self.team_id:
+            self.env.ref('helpdesk_mgmt.assignment_team_email_template'). \
+                send_mail(self.id, email_values={}, force_send=True)
 
     def assign_to_me(self):
         self.write({'user_id': self.env.user.id})
@@ -122,9 +128,15 @@ class HelpdeskTicket(models.Model):
                 'helpdesk.ticket.sequence') or '/'
         res = super().create(vals)
 
-        # Check if mail to the user has to be sent
-        if vals.get('user_id') and res:
-            res.send_user_mail()
+        if res:
+            # Check if mail to the user has to be sent
+            if vals.get('user_id'):
+                res.send_user_mail()
+
+            # Check if mail to the team has to be sent
+            if vals.get('user_id'):
+                res.send_team_mail()
+
         return res
 
     @api.multi
@@ -154,10 +166,14 @@ class HelpdeskTicket(models.Model):
 
         res = super(HelpdeskTicket, self).write(vals)
 
-        # Check if mail to the user has to be sent
+        # Check if mail to the user/team has to be sent
         for ticket in self:
             if vals.get('user_id'):
                 ticket.send_user_mail()
+
+            if vals.get('team_id'):
+                ticket.send_team_mail()
+
         return res
 
     # ---------------------------------------------------
@@ -238,3 +254,13 @@ class HelpdeskTicket(models.Model):
                     reason=reason
                 )
         return recipients
+
+    def get_ticket_url(self, ticket_id=None):
+        if ticket_id is None:
+            ticket_id = self.id
+        task_action = self.env.ref("helpdesk_mgmt.helpdesk_ticket_action")
+        menu = self.env.ref("helpdesk_mgmt.helpdesk_ticket_main_menu")
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        link = "%s/web?db=%s#id=%s&action=%s&view_type=form&model=helpdesk.ticket&menu_id=%s" % (
+            base_url, self.env.cr.dbname, ticket_id, task_action.id, menu.id)
+        return link

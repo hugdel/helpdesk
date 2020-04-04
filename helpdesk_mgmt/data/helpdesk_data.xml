@@ -13,13 +13,29 @@
       <field name="name">Ticket Assignment</field>
       <field name="model_id" ref="model_helpdesk_ticket"/>
       <field name="email_from">${object.company_id.partner_id.email}</field>
+      <field name="email_to">${object.user_id.email or ''}</field>
       <field name="subject">${object.company_id.name} Ticket Assignment (Ref ${object.number or 'n/a' })</field>
       <field name="partner_to">${object.partner_id.id}</field>
       <field name="auto_delete" eval="False"/>
       <field name="lang">${object.partner_id.lang}</field>
       <field name="body_html" type="xml">
         <p>Hello ${object.user_id.name},</p>
-        <p>The ticket ${object.number} has been assigned to you.</p>
+        <p>The ticket <a href="${object.get_ticket_url()}">${object.number}</a> has been assigned to you.</p>
+      </field>
+    </record>
+
+    <record id="assignment_team_email_template" model="mail.template">
+      <field name="name">Ticket Team Assignment</field>
+      <field name="model_id" ref="model_helpdesk_ticket"/>
+      <field name="email_from">${object.company_id.partner_id.email}</field>
+      <field name="email_to">${object.team_id.team_email}</field>
+      <field name="subject">${object.company_id.name} Ticket Team Assignment (Ref ${object.number or 'n/a' })</field>
+      <field name="partner_to">${object.partner_id.id}</field>
+      <field name="auto_delete" eval="False"/>
+      <field name="lang">${object.partner_id.lang}</field>
+      <field name="body_html" type="xml">
+        <p>Hello team ${object.team_id.name},</p>
+        <p>The ticket <a href="${object.get_ticket_url()}">${object.number}</a> has been assigned to your team.</p>
       </field>
     </record>
 
