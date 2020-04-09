@@ -134,7 +134,7 @@ class HelpdeskTicket(models.Model):
                 res.send_user_mail()
 
             # Check if mail to the team has to be sent
-            if vals.get('team_id'):
+            if vals.get('team_id') and res.team_id.notify_team:
                 res.send_team_mail()
 
         return res
@@ -171,7 +171,7 @@ class HelpdeskTicket(models.Model):
             if vals.get('user_id'):
                 ticket.send_user_mail()
 
-            if vals.get('team_id'):
+            if vals.get('team_id') and res.team_id.notify_team:
                 ticket.send_team_mail()
 
         return res

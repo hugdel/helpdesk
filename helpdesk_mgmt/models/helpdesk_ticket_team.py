@@ -24,6 +24,9 @@ class HelpdeskTeam(models.Model):
         store=False,
     )
 
+    notify_team = fields.Boolean(string="Notify team", default=True,
+                                 help="Enable to send email to all team's member.")
+
     color = fields.Integer("Color Index", default=0)
 
     ticket_ids = fields.One2many(
