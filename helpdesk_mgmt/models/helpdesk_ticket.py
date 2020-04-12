@@ -90,6 +90,21 @@ class HelpdeskTicket(models.Model):
             self.env.ref('helpdesk_mgmt.assignment_team_email_template'). \
                 send_mail(self.id, email_values={}, force_send=True)
 
+    def send_user_contact_us_mail(self):
+        if self.partner_email:
+            self.env.ref('assignment_user_contact_us_email_template'). \
+                    send_mail(self.id, email_values={}, force_send=True)
+
+    def send_user_applicant_mail(self):
+        if self.partner_email:
+            self.env.ref('helpdesk_mgmt.assignment_user_applicant_email_template'). \
+                    send_mail(self.id, email_values={}, force_send=True)
+
+    def send_user_service_call_mail(self):
+        if self.partner_email:
+            self.env.ref('assignment_user_service_call_email_template'). \
+                    send_mail(self.id, email_values={}, force_send=True)
+
     def assign_to_me(self):
         self.write({'user_id': self.env.user.id})
 
@@ -136,6 +151,23 @@ class HelpdeskTicket(models.Model):
             # Check if mail to the team has to be sent
             if vals.get('team_id') and res.team_id.notify_team:
                 res.send_team_mail()
+            #TODO find from where this was created and send the relevant email to user applicant.
+            #TODO found helpdesk.ticket.channel_id ?? mayby divide by channel and assign right email
+            #TODO channel_id is always web on 3 different source, maybe use category_id?
+
+            if vals.get('category_id') == "Joindre fournisseur":
+                res.send_user_applicant_mail()
+
+            if vals.get('category_id') == "Join team":
+                res.send_user_contact_us_mail()
+
+            if vals.get('category_id') == "Service CAll":
+                res.send_user_service_call_mail()
+
+            # to remove
+            res.send_user_applicant_mail()
+            res.send_user_contact_us_mail()
+            res.send_user_service_call_mail()
 
         return res
 
