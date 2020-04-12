@@ -7,7 +7,12 @@
     'description': """
 Generate ticket in the Helpdesk app from a form published.
     """,
-    'depends': ['website_form', 'website_partner', 'helpdesk_mgmt'],
+    'depends': [
+        'website_form',
+        'website_partner',
+        'helpdesk_mgmt',
+        'website_form_builder',
+    ],
     'data': [
         'data/website_crm_data.xml',
     ],
