@@ -93,7 +93,7 @@ class HelpdeskTicket(models.Model):
     def send_user_contact_us_mail(self):
         if self.partner_email:
             self.env.ref('helpdesk_mgmt.assignment_user_contact_us_email_template'). \
-                    send_mail(self.id, email_values={}, force_send=True)
+                send_mail(self.id, email_values={}, force_send=True)
 
     def assign_to_me(self):
         self.write({'user_id': self.env.user.id})
@@ -123,31 +123,29 @@ class HelpdeskTicket(models.Model):
     # CRUD
     # ---------------------------------------------------
 
-    @api.model
-    def create(self, vals):
-        if vals.get('number', '/') == '/':
-            seq = self.env['ir.sequence']
-            if 'company_id' in vals:
-                seq = seq.with_context(force_company=vals['company_id'])
-            vals['number'] = seq.next_by_code(
-                'helpdesk.ticket.sequence') or '/'
-        res = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('number', '/') == '/':
+                seq = self.env['ir.sequence']
+                if 'company_id' in vals:
+                    seq = seq.with_context(force_company=vals['company_id'])
+                vals['number'] = seq.next_by_code(
+                    'helpdesk.ticket.sequence') or '/'
+        res = super().create(vals_list)
 
-        if res:
+        for result in res:
             # Check if mail to the user has to be sent
-            if vals.get('user_id'):
-                res.send_user_mail()
+            if result.user_id:
+                result.send_user_mail()
 
             # Check if mail to the team has to be sent
-            if vals.get('team_id') and res.team_id.notify_team:
-                res.send_team_mail()
+            if result.team_id and result.team_id.notify_team:
+                result.send_team_mail()
 
-            #TODO
-            if vals.get('category_id') == self.env.ref('helpdesk_mgmt.helpdesk_ticket_category_contact_us').id:
-                res.send_user_contact_us_mail()
-
-
-
+            if result.category_id == self.env.ref(
+                'helpdesk_mgmt.helpdesk_ticket_category_contact_us').id:
+                result.send_user_contact_us_mail()
 
         return res
 
@@ -183,7 +181,7 @@ class HelpdeskTicket(models.Model):
             if vals.get('user_id'):
                 ticket.send_user_mail()
 
-            if vals.get('team_id') and res.team_id.notify_team:
+            if vals.get('team_id') and ticket.team_id.notify_team:
                 ticket.send_team_mail()
 
         return res
