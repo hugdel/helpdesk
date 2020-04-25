@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="ticket_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='description']" position="after">
+                <field name="show_supplier_mrp_info" invisible="1"/>
+                <page string="Machines" name="machine" attrs="{'invisible':[('show_supplier_mrp_info','=', False)]}">
+                    <group>
+                        <field name="workcenter_id" context="{'partner_id': partner_id}"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

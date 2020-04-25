@@ -1,0 +1,308 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* helpdesk_service_call
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-01 07:51+0000\n"
+"PO-Revision-Date: 2020-03-02 16:09-0500\n"
+"Last-Translator: Marie-Michèle Poulin <marie-michele.poulin@mathben.tech>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: fr\n"
+"X-Generator: Poedit 2.2.1\n"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_helpdesk_ticket_page
+msgid "<b>Partner phone:</b>"
+msgstr "<b>Téléphone :</b>"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_helpdesk_ticket_page
+msgid "<b>Severity:</b>Critical<br/>"
+msgstr "<b>Sévérité :</b>critique<br/>"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_helpdesk_ticket_page
+msgid "<b>Severity:</b>High<br/>"
+msgstr "<b>Sévérité :</b>Élevée<br/>"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_helpdesk_ticket_page
+msgid "<b>Severity:</b>Low<br/>"
+msgstr "<b>Sévérité :</b>basse<br/>"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_helpdesk_ticket_page
+msgid "<b>Severity:</b>Medium<br/>"
+msgstr "<b>Sévérité :</b>moyenne<br/>"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_helpdesk_ticket_page
+msgid ""
+"<br/>\n"
+"            <b>Affected system:</b>"
+msgstr ""
+"<br/>\n"
+"            <b>Système affecté :</b>"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_helpdesk_ticket_page
+msgid ""
+"<br/>\n"
+"            <b>Partner address invoice:</b>"
+msgstr ""
+"<br/>\n"
+"            <b>Adresse de facturation :</b>"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_helpdesk_ticket_page
+msgid ""
+"<br/>\n"
+"            <b>Partner address:</b>"
+msgstr ""
+"<br/>\n"
+"            <b>Adresse :</b>"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_helpdesk_ticket_page
+msgid ""
+"<br/>\n"
+"            <b>Problem location:</b>"
+msgstr ""
+"<br/>\n"
+"            <b>Problème de localisation :</b>"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket_affected_system__active
+msgid "Active"
+msgstr "Actif"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Add Attachments"
+msgstr "Ajouter une pièce jointe"
+
+#. module: helpdesk_service_call
+#: model:ir.actions.act_window,name:helpdesk_service_call.helpdesk_ticket_affected_system_action
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket__affected_system_id
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.view_helpdesk_affected_system_tree
+msgid "Affected System"
+msgstr "Système affecté"
+
+#. module: helpdesk_service_call
+#: model:ir.ui.menu,name:helpdesk_service_call.helpdesk_ticket_affected_system_menu
+msgid "Affected Systems"
+msgstr "Systèmes affectés"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Affected system"
+msgstr "Système affecté"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.view_helpdesk_ticket_affected_system_search
+msgid "Archived"
+msgstr "Archivé"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Category"
+msgstr "Catégorie"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket_affected_system__company_id
+msgid "Company"
+msgstr "Société"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket_affected_system__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket_affected_system__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: helpdesk_service_call
+#: code:addons/addons/odoo-business-spending-management-quebec-canada/helpdesk_service_call/models/helpdesk_ticket.py:21
+#: code:addons/helpdesk_service_call/models/helpdesk_ticket.py:21
+#: selection:helpdesk.ticket,severity:0
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+#, python-format
+msgid "Critical"
+msgstr "Critique"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Description"
+msgstr "Description"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket_affected_system__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Email"
+msgstr "Courriel"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Example: 4ième étage Nord-Est"
+msgstr "Exemple : 4ième étage Nord-Est"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Exemple: Camera 4 doesn't work."
+msgstr "Exemple : la caméra 4 ne fonctionne pas."
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.view_helpdesk_ticket_affected_system_search
+msgid "Helpdesk Affected System Search"
+msgstr "Recherche des systèmes affectés dans l'assistance"
+
+#. module: helpdesk_service_call
+#: model:ir.model,name:helpdesk_service_call.model_helpdesk_ticket
+msgid "Helpdesk Ticket"
+msgstr "Billet d'assistance"
+
+#. module: helpdesk_service_call
+#: model:ir.model,name:helpdesk_service_call.model_helpdesk_ticket_affected_system
+msgid "Helpdesk Ticket Affected System"
+msgstr "Billet d'assistance des systèmes affectés"
+
+#. module: helpdesk_service_call
+#: code:addons/addons/odoo-business-spending-management-quebec-canada/helpdesk_service_call/models/helpdesk_ticket.py:20
+#: code:addons/helpdesk_service_call/models/helpdesk_ticket.py:20
+#: selection:helpdesk.ticket,severity:0
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+#, python-format
+msgid "High"
+msgstr "Élevé"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket_affected_system__id
+msgid "ID"
+msgstr "Identification"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Invoice address"
+msgstr "Adresse de facturation"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket_affected_system____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket_affected_system__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket_affected_system__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Localisation"
+msgstr "Localisation"
+
+#. module: helpdesk_service_call
+#: code:addons/addons/odoo-business-spending-management-quebec-canada/helpdesk_service_call/models/helpdesk_ticket.py:18
+#: code:addons/helpdesk_service_call/models/helpdesk_ticket.py:18
+#: selection:helpdesk.ticket,severity:0
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+#, python-format
+msgid "Low"
+msgstr "Bas"
+
+#. module: helpdesk_service_call
+#: code:addons/addons/odoo-business-spending-management-quebec-canada/helpdesk_service_call/models/helpdesk_ticket.py:19
+#: code:addons/helpdesk_service_call/models/helpdesk_ticket.py:19
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+#, python-format
+msgid "Medium"
+msgstr "Moyen"
+
+#. module: helpdesk_service_call
+#: selection:helpdesk.ticket,severity:0
+msgid "Moyen"
+msgstr "Moyen"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket_affected_system__name
+msgid "Name"
+msgstr "Nom"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket__partner_address
+msgid "Partner Address"
+msgstr "Adresse"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket__partner_address_invoice
+msgid "Partner Address Invoice"
+msgstr "Adresse de facturation"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket__partner_phone
+msgid "Partner Phone"
+msgstr "Téléphone"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Phone"
+msgstr "Téléphone"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket__problem_location
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Problem location"
+msgstr "Problème de localisation"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Reporter"
+msgstr "Rapporté par"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Responsible"
+msgstr "Responsable"
+
+#. module: helpdesk_service_call
+#: model:ir.model.fields,field_description:helpdesk_service_call.field_helpdesk_ticket__severity
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Severity"
+msgstr "Sévérité"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Short description"
+msgstr "Brève description"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.view_helpdesk_affected_system_form
+msgid "Stages"
+msgstr "Étapes"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Subject"
+msgstr "Sujet"
+
+#. module: helpdesk_service_call
+#: model_terms:ir.ui.view,arch_db:helpdesk_service_call.portal_create_ticket
+msgid "Submit Ticket"
+msgstr "Soumettre le billet d'assistance"
