@@ -81,17 +81,17 @@ class HelpdeskTicket(models.Model):
         ('blocked', 'Blocked')], string='Kanban State')
 
     def send_user_mail(self):
-        if self.user_id:
+        if self.user_id and not self._context.get('mail_notrack'):
             self.env.ref('helpdesk_mgmt.assignment_email_template'). \
                 send_mail(self.id, email_values={}, force_send=True)
 
     def send_team_mail(self):
-        if self.team_id:
+        if self.team_id and not self._context.get('mail_notrack'):
             self.env.ref('helpdesk_mgmt.assignment_team_email_template'). \
                 send_mail(self.id, email_values={}, force_send=True)
 
     def send_user_contact_us_mail(self):
-        if self.partner_email:
+        if self.partner_email and not self._context.get('mail_notrack'):
             self.env.ref('helpdesk_mgmt.assignment_user_contact_us_email_template'). \
                 send_mail(self.id, email_values={}, force_send=True)
 
@@ -134,18 +134,19 @@ class HelpdeskTicket(models.Model):
                     'helpdesk.ticket.sequence') or '/'
         res = super().create(vals_list)
 
-        for result in res:
-            # Check if mail to the user has to be sent
-            if result.user_id:
-                result.send_user_mail()
+        if not self._context.get('mail_notrack'):
+            for result in res:
+                # Check if mail to the user has to be sent
+                if result.user_id:
+                    result.send_user_mail()
 
-            # Check if mail to the team has to be sent
-            if result.team_id and result.team_id.notify_team:
-                result.send_team_mail()
+                # Check if mail to the team has to be sent
+                if result.team_id and result.team_id.notify_team:
+                    result.send_team_mail()
 
-            if result.category_id == self.env.ref(
-                'helpdesk_mgmt.helpdesk_ticket_category_contact_us').id:
-                result.send_user_contact_us_mail()
+                if result.category_id == self.env.ref(
+                    'helpdesk_mgmt.helpdesk_ticket_category_contact_us').id:
+                    result.send_user_contact_us_mail()
 
         return res
 
@@ -177,12 +178,13 @@ class HelpdeskTicket(models.Model):
         res = super(HelpdeskTicket, self).write(vals)
 
         # Check if mail to the user/team has to be sent
-        for ticket in self:
-            if vals.get('user_id'):
-                ticket.send_user_mail()
+        if not self._context.get('mail_notrack'):
+            for ticket in self:
+                if vals.get('user_id'):
+                    ticket.send_user_mail()
 
-            if vals.get('team_id') and ticket.team_id.notify_team:
-                ticket.send_team_mail()
+                if vals.get('team_id') and ticket.team_id.notify_team:
+                    ticket.send_team_mail()
 
         return res
 
