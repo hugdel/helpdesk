@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_helpdesk_ticket_page" inherit_id="helpdesk_mgmt.portal_helpdesk_ticket_page">
+        <xpath expr="//div[hasclass('pull-left')]" position="inside">
+            <b>Partner phone:</b>
+            <t t-esc="ticket.partner_phone"/>
+            <br/>
+            <b>Partner address:</b>
+            <t t-esc="ticket.partner_address"/>
+            <br/>
+            <b>Partner address invoice:</b>
+            <t t-esc="ticket.partner_address_invoice"/>
+            <br/>
+            <b>Problem location:</b>
+            <t t-esc="ticket.problem_location"/>
+            <br/>
+            <b>Affected system:</b>
+            <t t-esc="ticket.affected_system_id.name"/>
+            <br/>
+            <t t-if="ticket.severity == '0'">
+                <b>Severity:</b>
+                Low
+                <br/>
+            </t>
+            <t t-if="ticket.severity == '1'">
+                <b>Severity:</b>
+                Medium
+                <br/>
+            </t>
+            <t t-if="ticket.severity == '2'">
+                <b>Severity:</b>
+                High
+                <br/>
+            </t>
+            <t t-if="ticket.severity == '3'">
+                <b>Severity:</b>
+                Critical
+                <br/>
+            </t>
+            <t t-if="len(ticket.attachment_ids)">
+                <b>Attachment count:</b>
+                <t t-esc="len(ticket.attachment_ids)"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_create_ticket" inherit_id="helpdesk_mgmt.portal_create_ticket">
+
+        <xpath expr="//form" position="replace">
+
+            <form action="/submitted/ticket" method="POST" class="form-horizontal mt32" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="name">Reporter</label>
+                    <div class="col-md-7 col-sm-8">
+                        <t t-esc="reporter"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="responsible">Responsible</label>
+                    <div class="col-md-7 col-sm-8">
+                        <select class="form-control" id="responsible" name="responsible" required="True">
+                            <t t-foreach="responsibles" t-as="res">
+                                <option t-attf-value="#{res.id}" t-att-selected="res.id == int(partner_id.id)">
+                                    <t t-esc="res.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="localisation">Localisation</label>
+                    <div class="col-md-7 col-sm-8">
+                        <select class="form-control" id="localisation" name="localisation" required="True">
+                            <t t-foreach="localisations" t-as="res">
+                                <option t-attf-value="#{res.id}" t-att-selected="res.id == int(root_partner_id.id)">
+                                    <t t-esc="res.name + ' - ' + res.street + ' - ' + res.city if res.street and res.city else res.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="invoice_address">Invoice address</label>
+                    <div class="col-md-7 col-sm-8">
+                        <select class="form-control" id="invoice_address" name="invoice_address" required="True">
+                            <t t-foreach="localisations_invoice" t-as="res">
+                                <!--                                <option value="-1">New</option>-->
+                                <!--                                <div role="separator" class="dropdown-divider" />-->
+                                <option t-attf-value="#{res.id}" t-att-selected="res.id == int(root_partner_id.id)">
+                                    <t t-esc="res.name + ' - ' + res.street + ' - ' + res.city if res.street and res.city else res.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="category">Category</label>
+                    <div class="col-md-7 col-sm-8">
+                        <select class="form-control" id="category" name="category" required="True">
+                            <t t-foreach="categories" t-as="cat">
+                                <option t-attf-value="#{cat.id}">
+                                    <t t-esc="cat.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="affected_system">Affected system</label>
+                    <div class="col-md-7 col-sm-8">
+                        <select class="form-control" id="affected_system" name="affected_system" required="True">
+                            <t t-foreach="affected_systems" t-as="cat">
+                                <option t-attf-value="#{cat.id}">
+                                    <t t-esc="cat.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="severity">Severity</label>
+                    <div class="col-md-7 col-sm-8">
+                        <select class="form-control" id="severity" name="severity" required="True">
+                            <option value="0">Low</option>
+                            <option value="1" selected="true">Medium</option>
+                            <option value="2">High</option>
+                            <option value="3">Critical</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="subject">Subject</label>
+                    <div class="col-md-7 col-sm-8">
+                        <input type="text" class="form-control" name="subject" required="True"
+                               placeholder="Short description"/>
+                    </div>
+                </div>
+
+                <div class="form-group form-field  form-field-many2one css_non_editable_mode_hidden" data-model-field="true" data-optional="true">
+                    <label class="control-label" for="team_id">
+                        <span>
+                            Équipe
+                        </span>
+                    </label>
+                    <select name="team_id" class="form-control o_website_form_input">
+                        <option/>
+                        <option value="1" selected="selected">
+                            Service
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="problem_location">Problem location</label>
+                    <div class="col-md-7 col-sm-8">
+                        <input type="text" class="form-control" name="problem_location"
+                               placeholder="Example: 4ième étage Nord-Est"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="attachment">Add Attachments</label>
+                    <div class="col-md-7 col-sm-8">
+                        <div class="btn btn-default btn-file col-md-12">
+                            <input class="form-control o_website_form_input" name="attachment" id="attachment"
+                                   type="file" multiple="multiple"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 col-dm-4 control-label" for="description">Description</label>
+                    <div class="col-md-7 col-sm-8">
+                        <textarea class="form-control" name="description" style="min-height: 120px"
+                                  required="True" placeholder="Exemple: Camera 4 doesn't work."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                        <button class="btn btn-primary btn-lg">Submit Ticket</button>
+                    </div>
+                </div>
+            </form>
+        </xpath>
+
+    </template>
+
+</odoo>

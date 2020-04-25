@@ -10,6 +10,7 @@ _logger = logging.getLogger(__name__)
 
 class HelpdeskMergeCategoryWizard(models.TransientModel):
     _name = 'helpdesk.merge.category.wizard'
+    _description = "Merge categories to category and disable it after."
 
     @api.model
     def default_get(self, fields):

@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="ticket_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='assign_to_me']" position="after">
+                <field name="show_service_call" invisible="1"/>
+                <button string="Automated handling"
+                        name="automated_handling"
+                        type="object"
+                        attrs="{'invisible' : [('show_service_call', '=', False)]}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_email']" position="after">
+                <field name="partner_phone"/>
+                <field name="partner_address"/>
+                <field name="partner_address_invoice"/>
+            </xpath>
+
+            <xpath expr="//field[@name='priority']" position="after">
+                <field name="severity" widget="priority" attrs="{'invisible': [('show_service_call', '=', False)]}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='description']" position="before">
+                <group>
+                    <field name="affected_system_id" attrs="{'invisible': [('show_service_call', '=', False)]}"/>
+                    <field name="problem_location" attrs="{'invisible': [('show_service_call', '=', False)]}"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <span attrs="{'invisible': [('show_service_call', '=', False)]}">
+                    <field name="order_confirmed_number" invisible="True"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action"
+                                name="%(sale_action_quotations)d" icon="fa-pencil-square-o"
+                                context="{'default_partner_id': partner_id, 'search_default_draft': 1, 'search_default_sent': 1}">
+                            <div class="o_stat_info">
+                                <field name="sale_number" class="o_stat_value"/>
+                                <span class="o_stat_text">Quotation(s)</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" type="action"
+                                attrs="{'invisible': [('sale_amount_total', '=', 0), ('order_confirmed_number', '=', 0)]}"
+                                name="%(sale_action_orders)d" icon="fa-usd"
+                                context="{'search_default_partner_id': partner_id, 'default_partner_id': partner_id, 'search_default_sales': 1}">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="sale_amount_total" widget="monetary"
+                                           options="{'currency_field': 'company_currency'}"/>
+                                </span>
+                                <span class="o_stat_text">Orders</span>
+                            </div>
+                        </button>
+                    </div>
+                </span>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="ticket_view_tree" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.tree</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="sale_amount_total" widget="monetary"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
