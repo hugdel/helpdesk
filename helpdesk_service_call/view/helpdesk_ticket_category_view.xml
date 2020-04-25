@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_helpdesk_category_form" model="ir.ui.view">
+        <field name="name">view.helpdesk_category.form</field>
+        <field name="model">helpdesk.ticket.category</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.view_helpdesk_category_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='main']" position="inside">
+                <field name="sale_order_template_id"/>
+                <field name="sale_order_template_line_id"
+                       attrs="{'invisible': [('sale_order_template_id', '=', False)]}"/>
+            </xpath>
+        </field>
+
+    </record>
+
+    <record id="view_helpdesk_category_tree" model="ir.ui.view">
+        <field name="name">view.helpdesk_category.tree</field>
+        <field name="model">helpdesk.ticket.category</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.view_helpdesk_category_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="sale_order_template_id"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

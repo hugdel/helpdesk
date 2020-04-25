@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- Actions -->
+        <record id="helpdesk_ticket_affected_system_action" model="ir.actions.act_window">
+            <field name="name">Affected System</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">helpdesk.ticket.affected_system</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <!-- Menus -->
+        <menuitem id="helpdesk_ticket_affected_system_menu" name="Affected Systems" parent="helpdesk_mgmt.helpdesk_ticket_config_main_menu"
+            action="helpdesk_ticket_affected_system_action" sequence="16"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="helpdesk_ticket_category_supplier_applicant" model="helpdesk.ticket.category">
+            <field name="company_id" ref="base.main_company"/>
+            <field name="name">Supplier applicant</field>
+            <field eval="True" name="active"/>
+        </record>
+
+        <record id="assignment_supplier_applicant_email_template" model="mail.template">
+            <field name="name">Ticket confirmation</field>
+            <field name="model_id" ref="model_helpdesk_ticket"/>
+            <field name="email_from">${object.company_id.partner_id.email}</field>
+            <field name="email_to">${object.partner_email}</field>
+            <field name="subject">${object.company_id.name} Ticket confirmation (Ref ${object.number or 'n/a' })
+            </field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html" type="xml">
+                <p>Hello ${object.partner_name},</p>
+                <p>The ticket ${object.number} has been created from supplier applicant. Thanks!
+                    <br/>
+                    Received informations by ${object.channel}
+                    <br/>
+                    Nom: ${object.partner_name}
+                    <br/>
+                    Email: ${object.partner_email}
+                    <br/>
+                    Phone: ${object.partner_phone}
+                    <br/>
+                    Address: ${object.partner_address}
+                    <br/>
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

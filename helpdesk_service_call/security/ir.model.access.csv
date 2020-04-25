@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_helpdesk_ticket_affected_system_manager,helpdesk.ticket.affected_system.manager,model_helpdesk_ticket_affected_system,helpdesk_mgmt.group_helpdesk_manager,1,1,1,1
+access_helpdesk_ticket_affected_system_user,helpdesk.ticket.affected_system.user,model_helpdesk_ticket_affected_system,base.group_user,1,0,0,0
+access_helpdesk_ticket_affected_system_portal,helpdesk.ticket.affected_system.portal,model_helpdesk_ticket_affected_system,base.group_portal,1,0,0,0
+access_helpdesk_ticket_affected_system_public,helpdesk.ticket.affected_system.public,model_helpdesk_ticket_affected_system,base.group_public,1,0,0,0
