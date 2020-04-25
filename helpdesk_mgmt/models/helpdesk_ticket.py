@@ -81,8 +81,19 @@ class HelpdeskTicket(models.Model):
         ('blocked', 'Blocked')], string='Kanban State')
 
     def send_user_mail(self):
-        self.env.ref('helpdesk_mgmt.assignment_email_template'). \
-            send_mail(self.id)
+        if self.user_id and not self._context.get('mail_notrack'):
+            self.env.ref('helpdesk_mgmt.assignment_email_template'). \
+                send_mail(self.id, email_values={}, force_send=True)
+
+    def send_team_mail(self):
+        if self.team_id and not self._context.get('mail_notrack'):
+            self.env.ref('helpdesk_mgmt.assignment_team_email_template'). \
+                send_mail(self.id, email_values={}, force_send=True)
+
+    def send_user_contact_us_mail(self):
+        if self.partner_email and not self._context.get('mail_notrack'):
+            self.env.ref('helpdesk_mgmt.assignment_user_contact_us_email_template'). \
+                send_mail(self.id, email_values={}, force_send=True)
 
     def assign_to_me(self):
         self.write({'user_id': self.env.user.id})
@@ -112,19 +123,31 @@ class HelpdeskTicket(models.Model):
     # CRUD
     # ---------------------------------------------------
 
-    @api.model
-    def create(self, vals):
-        if vals.get('number', '/') == '/':
-            seq = self.env['ir.sequence']
-            if 'company_id' in vals:
-                seq = seq.with_context(force_company=vals['company_id'])
-            vals['number'] = seq.next_by_code(
-                'helpdesk.ticket.sequence') or '/'
-        res = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('number', '/') == '/':
+                seq = self.env['ir.sequence']
+                if 'company_id' in vals:
+                    seq = seq.with_context(force_company=vals['company_id'])
+                vals['number'] = seq.next_by_code(
+                    'helpdesk.ticket.sequence') or '/'
+        res = super().create(vals_list)
 
-        # Check if mail to the user has to be sent
-        if vals.get('user_id') and res:
-            res.send_user_mail()
+        if not self._context.get('mail_notrack'):
+            for result in res:
+                # Check if mail to the user has to be sent
+                if result.user_id:
+                    result.send_user_mail()
+
+                # Check if mail to the team has to be sent
+                if result.team_id and result.team_id.notify_team:
+                    result.send_team_mail()
+
+                if result.category_id == self.env.ref(
+                    'helpdesk_mgmt.helpdesk_ticket_category_contact_us').id:
+                    result.send_user_contact_us_mail()
+
         return res
 
     @api.multi
@@ -154,10 +177,15 @@ class HelpdeskTicket(models.Model):
 
         res = super(HelpdeskTicket, self).write(vals)
 
-        # Check if mail to the user has to be sent
-        for ticket in self:
-            if vals.get('user_id'):
-                ticket.send_user_mail()
+        # Check if mail to the user/team has to be sent
+        if not self._context.get('mail_notrack'):
+            for ticket in self:
+                if vals.get('user_id'):
+                    ticket.send_user_mail()
+
+                if vals.get('team_id') and ticket.team_id.notify_team:
+                    ticket.send_team_mail()
+
         return res
 
     # ---------------------------------------------------
@@ -238,3 +266,13 @@ class HelpdeskTicket(models.Model):
                     reason=reason
                 )
         return recipients
+
+    def get_ticket_url(self, ticket_id=None):
+        if ticket_id is None:
+            ticket_id = self.id
+        task_action = self.env.ref("helpdesk_mgmt.helpdesk_ticket_action")
+        menu = self.env.ref("helpdesk_mgmt.helpdesk_ticket_main_menu")
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        link = "%s/web?db=%s#id=%s&action=%s&view_type=form&model=helpdesk.ticket&menu_id=%s" % (
+            base_url, self.env.cr.dbname, ticket_id, task_action.id, menu.id)
+        return link

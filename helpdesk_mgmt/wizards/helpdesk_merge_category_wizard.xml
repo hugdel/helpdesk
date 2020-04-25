@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="helpdesk_merge_category_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.merge.category.view.form</field>
+        <field name="model">helpdesk.merge.category.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select categories to merge into category.">
+                <p>The helpdesk category installed by modules is removed from this list. The merged categories will be inactive.</p>
+                <group>
+                    <group>
+                        <field name="helpdesk_categories_to_merge" options="{'no_create': True}"/>
+                        <field name="helpdesk_category_destination"/>
+                        <field name="send_emails"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Apply" name="merge_helpdesk_category" type="object" class="btn-primary"/>
+                    <button string="Cancel " class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- wizard action on res.partner -->
+    <act_window id="helpdesk_merge_category_wizard_action"
+                name="Merge Helpdesk category"
+                src_model="helpdesk.ticket.category"
+                res_model="helpdesk.merge.category.wizard"
+                view_type="form" view_mode="form"
+                key2="client_action_multi" target="new"
+                groups="group_helpdesk_manager"/>
+
+</odoo>

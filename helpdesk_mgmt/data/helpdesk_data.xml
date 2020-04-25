@@ -1,37 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data>
-    <record model="ir.module.category" id="module_helpdesk_category">
-      <field name="name">Helpdesk</field>
-      <field name="description">Helps you handle your helpdesk security.</field>
-      <field name="sequence">9</field>
-    </record>
-  </data>
-  <data noupdate="1">
-    <!--Email template -->
-    <record id="assignment_email_template" model="mail.template">
-      <field name="name">Ticket Assignment</field>
-      <field name="model_id" ref="model_helpdesk_ticket"/>
-      <field name="email_from">${object.company_id.partner_id.email}</field>
-      <field name="subject">${object.company_id.name} Ticket Assignment (Ref ${object.number or 'n/a' })</field>
-      <field name="partner_to">${object.partner_id.id}</field>
-      <field name="auto_delete" eval="False"/>
-      <field name="lang">${object.partner_id.lang}</field>
-      <field name="body_html" type="xml">
-        <p>Hello ${object.user_id.name},</p>
-        <p>The ticket ${object.number} has been assigned to you.</p>
-      </field>
-    </record>
+    <data>
+        <record model="ir.module.category" id="module_helpdesk_category">
+            <field name="name">Helpdesk</field>
+            <field name="description">Helps you handle your helpdesk security.</field>
+            <field name="sequence">9</field>
+        </record>
+    </data>
 
-    <record id="closed_ticket_template" model="mail.template">
-      <field name="name">Helpdesk Closed Ticket Notification Email</field>
-      <field name="model_id" ref="helpdesk_mgmt.model_helpdesk_ticket"/>
-      <field name="email_from">${object.company_id.partner_id.email}</field>
-      <field name="subject">The ticket ${object.number} has been closed.</field>
-      <field name="partner_to">${object.partner_id.id}</field>
-      <field name="auto_delete" eval="False"/>
-      <field name="lang">${object.partner_id.lang}</field>
-      <field name="body_html"><![CDATA[<html>
+    <data noupdate="1">
+        <record id="helpdesk_ticket_category_contact_us" model="helpdesk.ticket.category">
+            <field name="company_id" ref="base.main_company"/>
+            <field name="name">Contact Us</field>
+            <field eval="True" name="active"/>
+        </record>
+        <!--Email template -->
+        <record id="assignment_email_template" model="mail.template">
+            <field name="name">Ticket Assignment</field>
+            <field name="model_id" ref="model_helpdesk_ticket"/>
+            <field name="email_from">${object.company_id.partner_id.email}</field>
+            <field name="email_to">${object.user_id.email or ''}</field>
+            <field name="subject">${object.company_id.name} Ticket Assignment (Ref ${object.number or 'n/a' })</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html" type="xml">
+                <p>Hello ${object.user_id.name},</p>
+                <p>The ticket <a href="${object.get_ticket_url()}">${object.number}</a> has been assigned to you.
+                </p>
+            </field>
+        </record>
+
+        <record id="assignment_team_email_template" model="mail.template">
+            <field name="name">Ticket Team Assignment</field>
+            <field name="model_id" ref="model_helpdesk_ticket"/>
+            <field name="email_from">${object.company_id.partner_id.email}</field>
+            <field name="email_to">${object.team_id.team_email}</field>
+            <field name="subject">${object.company_id.name} Ticket Team Assignment (Ref ${object.number or 'n/a' })
+            </field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html" type="xml">
+                <p>Hello team ${object.team_id.name},</p>
+                <p>The ticket <a href="${object.get_ticket_url()}">${object.number}</a> has been assigned to your team.
+                </p>
+            </field>
+        </record>
+
+        <record id="assignment_user_contact_us_email_template" model="mail.template">
+            <field name="name">Ticket confirmation</field>
+            <field name="model_id" ref="model_helpdesk_ticket"/>
+            <field name="email_from">${object.company_id.partner_id.email}</field>
+            <field name="email_to">${object.partner_email}</field>
+            <field name="subject">${object.company_id.name} Ticket confirmation (Ref ${object.number or 'n/a' })
+            </field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html" type="xml">
+                <p>Hello ${object.partner_name},</p>
+                <p>The ticket ${object.number} has been created from contact us form. Thanks!
+                    Received informations:
+                    Nom: ${object.partner_name}
+                    Email: ${object.partner_email}
+                    Description: ${object.description}
+                </p>
+            </field>
+        </record>
+
+        <record id="closed_ticket_template" model="mail.template">
+            <field name="name">Helpdesk Closed Ticket Notification Email</field>
+            <field name="model_id" ref="helpdesk_mgmt.model_helpdesk_ticket"/>
+            <field name="email_from">${object.company_id.partner_id.email}</field>
+            <field name="subject">The ticket ${object.number} has been closed.</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[<html>
                 <head></head>
                 <body style="margin: 0; padding: 0;">
                 <table border="0" width="100%" cellpadding="0" bgcolor="#ededed" style="padding: 20px; background-color: #ededed; border-collapse:separate;">
@@ -84,17 +130,17 @@
                 </body>
                 </html>
             ]]></field>
-    </record>
+        </record>
 
-    <record id="changed_stage_template" model="mail.template">
-      <field name="name">Helpdesk Changed Stage notification Email</field>
-      <field name="model_id" ref="helpdesk_mgmt.model_helpdesk_ticket"/>
-      <field name="email_from">${object.company_id.partner_id.email}</field>
-      <field name="subject">The ticket ${object.number} stage has changed.</field>
-      <field name="partner_to">${object.partner_id.id}</field>
-      <field name="auto_delete" eval="False"/>
-      <field name="lang">${object.partner_id.lang}</field>
-      <field name="body_html"><![CDATA[<html>
+        <record id="changed_stage_template" model="mail.template">
+            <field name="name">Helpdesk Changed Stage notification Email</field>
+            <field name="model_id" ref="helpdesk_mgmt.model_helpdesk_ticket"/>
+            <field name="email_from">${object.company_id.partner_id.email}</field>
+            <field name="subject">The ticket ${object.number} stage has changed.</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[<html>
                 <head></head>
                 <body style="margin: 0; padding: 0;">
                 <table border="0" width="100%" cellpadding="0" bgcolor="#ededed" style="padding: 20px; background-color: #ededed; border-collapse:separate;">
@@ -147,72 +193,72 @@
                 </body>
                 </html>
             ]]>
-      </field>
-    </record>
+            </field>
+        </record>
 
-    <!-- Sequence -->
-    <record id="helpdesk_ticket_sequence" model="ir.sequence">
-      <field name="name">Helpdesk Ticket Sequence</field>
-      <field name="code">helpdesk.ticket.sequence</field>
-      <field name="prefix">HT</field>
-      <field name="padding">5</field>
-      <field name="company_id"/>
-    </record>
-    <!-- Stages -->
-    <record id="helpdesk_ticket_stage_new" model="helpdesk.ticket.stage">
-      <field name="sequence">1</field>
-      <field name="name">New</field>
-      <field name="unattended">True</field>
-      <field name="closed">False</field>
-      <field name="company_id"/>
-    </record>
-    <record id="helpdesk_ticket_stage_in_progress" model="helpdesk.ticket.stage">
-      <field name="sequence">2</field>
-      <field name="name">In Progress</field>
-      <field name="unattended">False</field>
-      <field name="closed">False</field>
-      <field name="company_id"/>
-    </record>
-    <record id="helpdesk_ticket_stage_awaiting" model="helpdesk.ticket.stage">
-      <field name="sequence">3</field>
-      <field name="name">Awaiting</field>
-      <field name="unattended">False</field>
-      <field name="closed">False</field>
-      <field name="company_id"/>
-    </record>
-    <record id="helpdesk_ticket_stage_done" model="helpdesk.ticket.stage">
-      <field name="sequence">3</field>
-      <field name="name">Done</field>
-      <field name="unattended">False</field>
-      <field name="closed">True</field>
-      <field name="fold">True</field>
-      <field name="mail_template_id" ref="helpdesk_mgmt.closed_ticket_template"/>
-      <field name="company_id"/>
-    </record>
-    <record id="helpdesk_ticket_stage_cancelled" model="helpdesk.ticket.stage">
-      <field name="sequence">4</field>
-      <field name="name">Cancelled</field>
-      <field name="unattended">False</field>
-      <field name="closed">True</field>
-      <field name="fold">True</field>
-      <field name="mail_template_id" ref="helpdesk_mgmt.closed_ticket_template"/>
-      <field name="company_id"/>
-    </record>
-    <!-- Channels -->
-    <record id="helpdesk_ticket_channel_web" model="helpdesk.ticket.channel">
-      <field name="name">Web</field>
-    </record>
-    <record id="helpdesk_ticket_channel_portal" model="helpdesk.ticket.channel">
-      <field name="name">Portal</field>
-    </record>
-    <record id="helpdesk_ticket_channel_email" model="helpdesk.ticket.channel">
-      <field name="name">Email</field>
-    </record>
-    <record id="helpdesk_ticket_channel_phone" model="helpdesk.ticket.channel">
-      <field name="name">Phone</field>
-    </record>
-    <record id="helpdesk_ticket_channel_other" model="helpdesk.ticket.channel">
-      <field name="name">Other</field>
-    </record>
-  </data>
+        <!-- Sequence -->
+        <record id="helpdesk_ticket_sequence" model="ir.sequence">
+            <field name="name">Helpdesk Ticket Sequence</field>
+            <field name="code">helpdesk.ticket.sequence</field>
+            <field name="prefix">HT</field>
+            <field name="padding">5</field>
+            <field name="company_id"/>
+        </record>
+        <!-- Stages -->
+        <record id="helpdesk_ticket_stage_new" model="helpdesk.ticket.stage">
+            <field name="sequence">1</field>
+            <field name="name">New</field>
+            <field name="unattended">True</field>
+            <field name="closed">False</field>
+            <field name="company_id"/>
+        </record>
+        <record id="helpdesk_ticket_stage_in_progress" model="helpdesk.ticket.stage">
+            <field name="sequence">2</field>
+            <field name="name">In Progress</field>
+            <field name="unattended">False</field>
+            <field name="closed">False</field>
+            <field name="company_id"/>
+        </record>
+        <record id="helpdesk_ticket_stage_awaiting" model="helpdesk.ticket.stage">
+            <field name="sequence">3</field>
+            <field name="name">Awaiting</field>
+            <field name="unattended">False</field>
+            <field name="closed">False</field>
+            <field name="company_id"/>
+        </record>
+        <record id="helpdesk_ticket_stage_done" model="helpdesk.ticket.stage">
+            <field name="sequence">3</field>
+            <field name="name">Done</field>
+            <field name="unattended">False</field>
+            <field name="closed">True</field>
+            <field name="fold">True</field>
+            <field name="mail_template_id" ref="helpdesk_mgmt.closed_ticket_template"/>
+            <field name="company_id"/>
+        </record>
+        <record id="helpdesk_ticket_stage_cancelled" model="helpdesk.ticket.stage">
+            <field name="sequence">4</field>
+            <field name="name">Cancelled</field>
+            <field name="unattended">False</field>
+            <field name="closed">True</field>
+            <field name="fold">True</field>
+            <field name="mail_template_id" ref="helpdesk_mgmt.closed_ticket_template"/>
+            <field name="company_id"/>
+        </record>
+        <!-- Channels -->
+        <record id="helpdesk_ticket_channel_web" model="helpdesk.ticket.channel">
+            <field name="name">Web</field>
+        </record>
+        <record id="helpdesk_ticket_channel_portal" model="helpdesk.ticket.channel">
+            <field name="name">Portal</field>
+        </record>
+        <record id="helpdesk_ticket_channel_email" model="helpdesk.ticket.channel">
+            <field name="name">Email</field>
+        </record>
+        <record id="helpdesk_ticket_channel_phone" model="helpdesk.ticket.channel">
+            <field name="name">Phone</field>
+        </record>
+        <record id="helpdesk_ticket_channel_other" model="helpdesk.ticket.channel">
+            <field name="name">Other</field>
+        </record>
+    </data>
 </odoo>

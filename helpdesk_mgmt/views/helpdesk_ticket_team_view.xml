@@ -33,6 +33,8 @@
                     </div>
                     <group name="main">
                         <field name="user_ids" widget="many2many_tags"/>
+                        <field name="notify_team"/>
+                        <field name="custom_emails"/>
                         <field name="company_id" groups="base.group_multi_company"/>
                     </group>
                 </sheet>

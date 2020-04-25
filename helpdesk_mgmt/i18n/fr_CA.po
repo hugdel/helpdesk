@@ -23,16 +23,33 @@ msgid "${object.company_id.name} Ticket Assignment (Ref ${object.number or 'n/a'
 msgstr "${object.company_id.name} Affectation des billets d'assistance (Ref ${object.number or 'n/a' })"
 
 #. module: helpdesk_mgmt
+#: model:mail.template,subject:helpdesk_mgmt.assignment_team_email_template
+msgid "${object.company_id.name} Ticket Team Assignment (Ref ${object.number or 'n/a' })"
+msgstr "${object.company_id.name} Affectation d'équipe des billets d'assistance (Ref ${object.number or 'n/a' })"
+
+#. module: helpdesk_mgmt
 #: model:mail.template,body_html:helpdesk_mgmt.assignment_email_template
 msgid ""
 "<?xml version=\"1.0\"?>\n"
 "<data><p>Hello ${object.user_id.name},</p>\n"
-"        <p>The ticket ${object.number} has been assigned to you.</p>\n"
+"        <p>The ticket <a href=\"${object.get_ticket_url()}\">${object.number}</a> has been assigned to you.</p>\n"
 "      </data>"
 msgstr ""
 "<?xml version=\"1.0\"?>\n"
 "<data><p>Bonjour ${object.user_id.name},</p>\n"
-"        <p>Le billet d'assitance ${object.number} vous a été assigné.</p>\n"
+"        <p>Le billet d'assistance <a href=\"${object.get_ticket_url()}\">${object.number}</a> vous a été assigné.</p>\n"
+"      </data>"
+
+#. module: helpdesk_mgmt
+#: model:mail.template,body_html:helpdesk_mgmt.assignment_team_email_template
+msgid "<?xml version=\"1.0\"?>\n"
+"<data><p>Hello team ${object.team_id.name},</p>\n"
+"        <p>The ticket <a href=\"${object.get_ticket_url()}\">${object.number}</a> has been assigned to your team.</p>\n"
+"      </data>"
+msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<data><p>Bonjour équipe ${object.team_id.name},</p>\n"
+"        <p>Le billet d'assistance d'équipe <a href=\"${object.get_ticket_url()}\">${object.number}</a> vous a été assigné.</p>\n"
 "      </data>"
 
 #. module: helpdesk_mgmt
@@ -80,7 +97,7 @@ msgid ""
 "                            <tbody>\n"
 "                              <td valign=\"top\" style=\"font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;\">\n"
 "                                <p>Hello ${object.user_id.name},</p>\n"
-"                                <p>The ticket ${object.number} has been closed.</p>\n"
+"                                <p>The ticket <a href=\"${object.get_ticket_url()}\">${object.number}</a> has been closed.</p>\n"
 "                              </td>\n"
 "                            </tbody>\n"
 "                          </table>\n"
@@ -134,7 +151,7 @@ msgstr ""
 "                            <tbody>\n"
 "                              <td valign=\"top\" style=\"font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;\">\n"
 "                                <p>Bonjour ${object.user_id.name},</p>\n"
-"                                <p>Le billet d'assistance ${object.number} a été fermé.</p>\n"
+"                                <p>Le billet d'assistance <a href=\"${object.get_ticket_url()}\">${object.number}</a> a été fermé.</p>\n"
 "                              </td>\n"
 "                            </tbody>\n"
 "                          </table>\n"
@@ -190,7 +207,7 @@ msgid ""
 "                            <tbody>\n"
 "                              <td valign=\"top\" style=\"font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;\">\n"
 "                                <p>Hello ${object.user_id.name},</p>\n"
-"                                <p>The ticket ${object.number} stage has changed to ${object.stage_id.name}.</p>\n"
+"                                <p>The ticket <a href=\"${object.get_ticket_url()}\">${object.number}</a> stage has changed to ${object.stage_id.name}.</p>\n"
 "                              </td>\n"
 "                            </tbody>\n"
 "                          </table>\n"
@@ -245,7 +262,7 @@ msgstr ""
 "                            <tbody>\n"
 "                              <td valign=\"top\" style=\"font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;\">\n"
 "                                <p>Bonjour ${object.user_id.name},</p>\n"
-"                                <p>L'état du billet d'assistance${object.number} a été changé à ${object.stage_id.name}.</p>\n"
+"                                <p>L'état du billet d'assistance<a href=\"${object.get_ticket_url()}\">${object.number}</a> a été changé à ${object.stage_id.name}.</p>\n"
 "                              </td>\n"
 "                            </tbody>\n"
 "                          </table>\n"
@@ -1067,13 +1084,13 @@ msgstr "Équipes"
 
 #. module: helpdesk_mgmt
 #: model:mail.template,subject:helpdesk_mgmt.closed_ticket_template
-msgid "The ticket ${object.number} has been closed."
-msgstr "Le billet d'assistance ${object.number} a été fermé."
+msgid "The ticket <a href=\"${object.get_ticket_url()}\">${object.number}</a> has been closed."
+msgstr "Le billet d'assistance <a href=\"${object.get_ticket_url()}\">${object.number}</a> a été fermé."
 
 #. module: helpdesk_mgmt
 #: model:mail.template,subject:helpdesk_mgmt.changed_stage_template
-msgid "The ticket ${object.number} stage has changed."
-msgstr "L'état du billet d'assistance ${object.number} a été changé."
+msgid "The ticket <a href=\"${object.get_ticket_url()}\">${object.number}</a> stage has changed."
+msgstr "L'état du billet d'assistance <a href=\"${object.get_ticket_url()}\">${object.number}</a> a été changé."
 
 #. module: helpdesk_mgmt
 #: model_terms:ir.ui.view,arch_db:helpdesk_mgmt.portal_my_tickets
